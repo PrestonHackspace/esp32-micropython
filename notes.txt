@@ -1,0 +1,14 @@
+# Install ESP flash tool and AMPY file upload utility
+pip3 install esptool adafruit-ampy
+
+# Erase flash
+esptool.py --chip esp32 -p COM3 erase_flash
+
+# Write MicroPython image
+esptool.py --chip esp32 -p COM3 write_flash -z 0x1000 esp32-20180524-v1.9.4-86-g4200018a.bin
+
+# Write driver for OLED display
+ampy -p /dev/ttyUSB0 put ssd1306.py
+
+# Write sample program that runs on boot
+ampy -p /dev/ttyUSB0 put boot.py
