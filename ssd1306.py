@@ -91,6 +91,9 @@ class SSD1306:
     def fill(self, col):
         self.framebuf.fill(col)
 
+    def fill_rect(self, x, y, w, h, c):
+        self.framebuf.fill_rect(x, y, w, h, c)
+
     def pixel(self, x, y, col):
         self.framebuf.pixel(x, y, col)
 
