@@ -13,6 +13,7 @@ import json
 
 #     return params
 
+
 def start_server(handler):
     s = socket.socket()
     ai = socket.getaddrinfo("0.0.0.0", 80)
@@ -35,7 +36,7 @@ def start_server(handler):
         try:
             client_s.settimeout(1)
 
-            string_request = client_s.recv(2048).decode('utf-8')
+            string_request = client_s.recv(4096).decode('utf-8')
 
             printLine(string_request, 4)
 
@@ -49,30 +50,53 @@ def start_server(handler):
             (request_method, path, _) = request_line
 
             header = ''
-            post_data = ''
+            post_json = {}
 
-            if request_method == 'POST':
-                post_data = request_lines[2]
+            def respond_with_cors():
+                header = ''
 
-            response = handler(request_method, path, post_data)
-            
-            def not_found():
-                header += 'HTTP/1.1 404 Not Found\r\n'
-                header += 'Connection: close\r\n'
-                header += 'Content-Length: 9\r\n'
+                header += 'HTTP/1.1 200 OK\r\n'
+                header += 'Accept: application/json\r\n'
+                header += 'Access-Control-Allow-Origin: *\r\n'
+                header += 'Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n'
+                header += 'Access-Control-Allow-Headers: content-type\r\n'
+                header += 'Content-Length: 0\r\n'
+                header += '\r\n'
+
+                client_s.write(bytes(header, 'utf-8'))
+
+            def respond_with_error(code, message):
+                header = ''
+
+                header += 'HTTP/1.1 ' + str(code) + ' Invalid Request\r\n'
+                header += 'Content-Length: ' + str(len(message)) + '\r\n'
                 header += '\r\n'
 
                 client_s.send(bytes(header, 'utf-8'))
 
-                client_s.write(bytes('Not found', 'utf-8'))
+                client_s.write(bytes(message, 'utf-8'))
+
+            if request_method == 'OPTIONS':
+                return respond_with_cors()
+
+            if request_method == 'POST':
+                post_data = request_lines[len(request_lines) - 1]
+
+                try:
+                    post_json = json.loads(post_data)
+                except:
+                    return respond_with_error('400', 'Invalid JSON: ' + post_data)
+
+            response = handler(request_method, path, post_json)
 
             if not response:
-                response = {}
+                response = { 'file': path }
 
             if 'json' in response:
                 data = bytes(json.dumps(response['json']), 'utf-8')
 
                 header += 'HTTP/1.1 200 OK\r\n'
+                header += 'Access-Control-Allow-Origin: *\r\n'
                 header += 'Content-Type: application/json\r\n'
                 header += 'Content-Length: ' + str(len(data)) + '\r\n'
                 header += '\r\n'
@@ -97,7 +121,6 @@ def start_server(handler):
 
                 if src_size != -1:
                     header += 'HTTP/1.1 200 OK\r\n'
-                    header += 'Connection: close\r\n'
                     if ext == 'jpg':
                         header += 'Content-Type: image/jpeg\r\n'
                     else:
@@ -118,10 +141,10 @@ def start_server(handler):
                                 else:
                                     break
                 else:
-                    not_found()
+                    respond_with_error(404, 'File not found')
             else:
-                not_found()
-                
+                respond_with_error(404, 'Not found')
+
         except Exception as e:
             print("Exception", e)
         finally:

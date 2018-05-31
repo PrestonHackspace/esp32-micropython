@@ -1,0 +1,107 @@
+body {
+  background: #eee;  
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background: #3498db;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  border-radius: 4px;
+  border: none;
+  font-family: Arial;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 6px 12px 6px 12px;
+  outline: none;
+}
+
+.App {
+  background: #fff;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.App__heading {
+  margin: 0 0 16px 0;
+}
+
+.App__tabs {
+  display: flex;
+}
+
+.App__tab {
+  margin: 0 8px 0 0;
+  border-radius: 8px 8px 0 0;
+  border: solid 1px #ccc;
+  border-bottom: none;
+  padding: 10px 20px 10px 20px;
+  text-transform: capitalize;
+}
+
+.App__tab--unhighlight {
+  background: #fff;
+  color: #000;
+}
+
+.App__tab--highlight {
+  
+}
+
+.App__view {
+  border: solid 1px #ccc;
+  padding: 16px;
+}
+
+.View__loading {
+  line-height: 16px;
+}
+
+.View__buttons {
+  direction: rtl;
+  margin: 16px 0 0 0;
+}
+
+.View__buttons button {
+  padding: 10px 20px 10px 20px;
+}
+
+.NetworkList {
+  
+}
+
+.NetworkList__ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: solid 1px #ddd;
+  border-bottom: none;
+}
+
+.NetworkItem {
+  line-height: 16px;
+  border-bottom: solid 1px #ddd;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.NetworkItem:nth-child(2n) {
+  background: #f7f7f7;
+} 
+
+.NetworkItem__ssid {
+  flex: 1;
+  font-size: 20px;
+}
+
+.NetworkItem__rssi {
+  padding: 0 16px;
+}
+
+.NetworkItem__connect {
+  
+}

@@ -1,0 +1,17 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "hyperapp": "^1.2.5",
+    "parcel": "^1.8.1"
+  },
+  "scripts": {
+    "start": "parcel web/index.html"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@types/node": "^10.1.4",
+    "@types/shelljs": "^0.8.0",
+    "shelljs": "^0.8.2",
+    "ts-node": "^6.0.5",
+    "typescript": "^2.9.1"
+  },
+  "scripts": {
+    "upload": "ts-node scripts/upload.ts"
+  }
+}
