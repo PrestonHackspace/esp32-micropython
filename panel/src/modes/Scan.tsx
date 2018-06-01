@@ -49,7 +49,7 @@ export const scanActions = (apiClient: ApiClient): ScanActions => ({
 
 export const Scan = () => ({ scan: { networks, status } }: AppState, { scan: { refresh, connect } }: AppActions) => {
   return (
-    <div>
+    <div oncreate={refresh}>
 
       {status && <div className={`View__status View__status--${status}`}>{status}</div>}
 

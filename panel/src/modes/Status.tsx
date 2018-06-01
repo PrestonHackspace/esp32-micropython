@@ -5,42 +5,42 @@ import { ApiClient, DeviceStatus } from '../api-client';
 const React = { createElement: h };
 
 export interface StatusState {
-  status: DeviceStatus | 'loading';
+  deviceStatus: DeviceStatus | 'loading';
 }
 
 export interface StatusActions {
-  loadStatus(): ActionReturn<StatusState, StatusActions>;
+  refresh(): ActionReturn<StatusState, StatusActions>;
 
   _setStatus(status: DeviceStatus): ActionReturn<StatusState, StatusActions>;
 }
 
 export const statusActions = (apiClient: ApiClient): StatusActions => ({
-  loadStatus: () => (_, actions) => {
+  refresh: () => (_, actions) => {
     apiClient.getStatus().then(actions._setStatus);
 
-    return { status: 'loading' };
+    return { deviceStatus: 'loading' };
   },
 
-  _setStatus: (status) => () => ({ status }),
+  _setStatus: (deviceStatus) => () => ({ deviceStatus }),
 });
 
-export const Status = () => ({ status: { status } }: AppState, { status: { loadStatus } }: AppActions) => {
+export const Status = () => ({ status: { deviceStatus } }: AppState, { status: { refresh } }: AppActions) => {
   return (
-    <div oncreate={loadStatus}>
+    <div>
 
       {
-        status === 'loading' ?
+        deviceStatus === 'loading' ?
           <div className='View__loading'>Loading...</div> :
 
           <div className='Status__ips'>
-            {status.ap && <div>Access Point IP: {status.ap[0]}</div>}
+            {deviceStatus.ap && <div>Access Point IP: {deviceStatus.ap[0]}</div>}
 
-            {status.sta && <div>Network IP: {status.sta[0]}</div>}
+            {deviceStatus.sta && <div>Network IP: {deviceStatus.sta[0]}</div>}
           </div>
       }
 
       <div className='View__buttons'>
-        <button onclick={loadStatus}>Refresh</button>
+        <button onclick={refresh}>Refresh</button>
       </div>
 
     </div>

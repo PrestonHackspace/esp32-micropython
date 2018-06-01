@@ -51,7 +51,7 @@ export const savedActions = (apiClient: ApiClient): SavedActions => ({
 
 export const Saved: StatefulView = () => ({ saved: { networks, status } }, { saved: { refresh, connect } }) => {
   return (
-    <div>
+    <div oncreate={refresh}>
 
       {status && <div className={`View__status View__status--${status}`}>{status}</div>}
 

@@ -22,7 +22,7 @@ const getDirtyFiles = (dir: 'web' | 'py', after?: Date) => {
     const mtime = fs.statSync(filePath).mtime
 
     return { fileName, filePath, mtime };
-  }).filter(({ fileName, filePath, mtime }) => !after || mtime > after);
+  }).filter(({ fileName, filePath, mtime }) => (fileName[0] !== '.') && (!after || mtime > after));
 };
 
 const ls = (port: string) => {

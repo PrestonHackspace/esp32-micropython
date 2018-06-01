@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "parcel web/index.html",
-    "build": "parcel build web/index.html",
-    "copy": "cp -r dist/* ../web/"
+    "build": "rm -f dist/* && parcel build web/index.html",
+    "copy": "rm -f ../web/*.js ../web/*.css ../web/*.map && cp -r dist/*.html dist/*.js dist/*.css ../web/"
   }
 }

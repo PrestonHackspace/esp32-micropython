@@ -15,20 +15,38 @@ const init = () => {
     view: 'status',
 
     status: {
-      status: 'loading',
+      deviceStatus: 'loading',
     },
 
     scan: {
       networks: 'unloaded',
+      status: null,
     },
 
     saved: {
       networks: 'unloaded',
+      status: null,
     },
   };
 
   const actions: AppActions = {
-    setView: (view) => () => ({ view }),
+    setView: (view) => (_, actions) => {
+      // `oncreate` doesn't seem to work for the other tabs...
+
+      if (view === 'status') {
+        actions.status.refresh();
+      }
+
+      if (view === 'scan') {
+        actions.scan.refresh();
+      }
+
+      if (view === 'saved') {
+        actions.saved.refresh();
+      }
+
+      return { view };
+    },
 
     status: statusActions(apiClient),
     scan: scanActions(apiClient),
@@ -36,7 +54,7 @@ const init = () => {
   };
 
   const App: AppView = ({ view }, { setView }) => (
-    <div className='App'>
+    <div className='App' oncreate={() => setView('status')}>
 
       <h1 className='App__heading'>ESP32 Panel</h1>
 

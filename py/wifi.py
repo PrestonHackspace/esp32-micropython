@@ -42,6 +42,8 @@ def get_network_list():
 def connect(ssid, password) -> str:
     sta_if.active(True)
 
+    sta_if.disconnect()
+
     oled.printLine('Connect %s...' % ssid, 0)
 
     sta_if.connect(ssid, password)
