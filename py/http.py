@@ -1,29 +1,6 @@
-import oled
 import socket
 import os
 import json
-
-
-# def linesplit(socket):
-#     buffer = socket.recv(128)
-#     buffering = True
-
-#     lines = []
-
-#     while buffering:
-#         if "\n" in buffer:
-#             (line, buffer) = buffer.split("\n", 1)
-#             lines.append(line + "\n")
-#         else:
-#             more = socket.recv(128)
-#             if len(more) == 0:
-#                 buffering = False
-#             else:
-#                 buffer += more
-#     if buffer:
-#         lines.append(buffer)
-
-#     return lines
 
 
 def start_server(handler):
@@ -42,8 +19,6 @@ def start_server(handler):
         except OSError as e:
             # Non-blocking socket so ignore
             return
-
-        oled.printLine('ACCEPT', 3)
 
         try:
             client_s.settimeout(3)
@@ -187,6 +162,5 @@ def start_server(handler):
             print("Exception", e)
         finally:
             client_s.close()
-            oled.printLine('CLOSED', 3)
 
     s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
