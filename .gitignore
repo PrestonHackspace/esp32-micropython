@@ -1,6 +1,5 @@
 node_modules
 .lastupload
 .cache
-*.gz
 dist
 *.pyc

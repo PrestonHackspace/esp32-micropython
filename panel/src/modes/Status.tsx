@@ -32,7 +32,11 @@ export const Status = () => ({ status: { status } }: AppState, { status: { loadS
         status === 'loading' ?
           <div className='View__loading'>Loading...</div> :
 
-          <div>{JSON.stringify(status)}</div>
+          <div>
+            <div>Access Point IP: {status.ap[0]}</div>
+
+            {status.sta && <div>Network IP: {status.sta[0]}</div>}
+          </div>
       }
 
       <div className='View__buttons'>

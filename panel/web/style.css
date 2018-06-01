@@ -60,6 +60,21 @@ button {
   line-height: 16px;
 }
 
+.View__status {
+  line-height: 32px;
+  font-size: 24px;
+  text-transform: capitalize;
+  margin: 0 0 16px 0;
+}
+
+.View__status--connected {
+  color: #0c0;
+}
+
+.View__status--failed {
+  color: #c00;
+}
+
 .View__buttons {
   direction: rtl;
   margin: 16px 0 0 0;

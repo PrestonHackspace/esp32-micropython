@@ -1,17 +1,29 @@
-from screen import printLine
+import oled
 import socket
 import os
 import json
 
-# def parse_post_data(post_data) -> dict:
-#     pairs = post_data.split('&')
 
-#     params = {}
+# def linesplit(socket):
+#     buffer = socket.recv(128)
+#     buffering = True
 
-#     for [key, value] in pairs:
-#         params[key] = value
+#     lines = []
 
-#     return params
+#     while buffering:
+#         if "\n" in buffer:
+#             (line, buffer) = buffer.split("\n", 1)
+#             lines.append(line + "\n")
+#         else:
+#             more = socket.recv(128)
+#             if len(more) == 0:
+#                 buffering = False
+#             else:
+#                 buffer += more
+#     if buffer:
+#         lines.append(buffer)
+
+#     return lines
 
 
 def start_server(handler):
@@ -31,23 +43,35 @@ def start_server(handler):
             # Non-blocking socket so ignore
             return
 
-        printLine('ACCEPT', 3)
+        oled.printLine('ACCEPT', 3)
 
         try:
-            client_s.settimeout(1)
+            client_s.settimeout(3)
 
-            string_request = client_s.recv(4096).decode('utf-8')
+            buf = None
+            bufs = None
 
-            printLine(string_request, 4)
+            while True:
+                chunk = client_s.recv(128)
 
-            request_lines = string_request.split("\r\n")
-            request_line = request_lines[0]
-            request_line = request_line.split()
+                if buf == None:
+                    buf = chunk
+                else:
+                    buf += chunk
 
-            if len(request_line) < 3:
+                bufs = buf.decode('utf-8')
+
+                if '\r\n\r\n' in bufs:
+                    break
+
+            lines = bufs.split("\r\n")
+
+            first_line_parts = lines[0].split()
+
+            if len(first_line_parts) < 3:
                 return
 
-            (request_method, path, _) = request_line
+            (request_method, path, _) = first_line_parts
 
             header = ''
             post_json = {}
@@ -59,7 +83,7 @@ def start_server(handler):
                 header += 'Accept: application/json\r\n'
                 header += 'Access-Control-Allow-Origin: *\r\n'
                 header += 'Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n'
-                header += 'Access-Control-Allow-Headers: content-type\r\n'
+                header += 'Access-Control-Allow-Headers: content-type, x-json\r\n'
                 header += 'Content-Length: 0\r\n'
                 header += '\r\n'
 
@@ -69,8 +93,13 @@ def start_server(handler):
                 header = ''
 
                 header += 'HTTP/1.1 ' + str(code) + ' Invalid Request\r\n'
+                header += 'Content-Type: text/plain\r\n'
                 header += 'Content-Length: ' + str(len(message)) + '\r\n'
                 header += '\r\n'
+
+                # f = open('dump.json', 'w')
+                # f.write(json.dumps(lines))
+                # f.close()
 
                 client_s.send(bytes(header, 'utf-8'))
 
@@ -80,17 +109,24 @@ def start_server(handler):
                 return respond_with_cors()
 
             if request_method == 'POST':
-                post_data = request_lines[len(request_lines) - 1]
+                json_str = '{}'
+
+                for line in lines:
+                    try:
+                        if line.index('x-json') == 0:
+                            (_, json_str) = line.split(': ')
+                    except ValueError as e:
+                        pass
 
                 try:
-                    post_json = json.loads(post_data)
+                    post_json = json.loads(json_str)
                 except:
-                    return respond_with_error('400', 'Invalid JSON: ' + post_data)
+                    return respond_with_error('400', 'Invalid JSON: ' + json_str)
 
             response = handler(request_method, path, post_json)
 
             if not response:
-                response = { 'file': path }
+                response = {'file': path}
 
             if 'json' in response:
                 data = bytes(json.dumps(response['json']), 'utf-8')
@@ -123,6 +159,8 @@ def start_server(handler):
                     header += 'HTTP/1.1 200 OK\r\n'
                     if ext == 'jpg':
                         header += 'Content-Type: image/jpeg\r\n'
+                    elif ext == 'css':
+                        header += 'Content-Type: text/css\r\n'
                     else:
                         header += 'Content-Type: text/html; charset=UTF-8\r\n'
                     header += 'Content-Encoding: gzip\r\n'
@@ -149,6 +187,6 @@ def start_server(handler):
             print("Exception", e)
         finally:
             client_s.close()
-            printLine('CLOSED', 3)
+            oled.printLine('CLOSED', 3)
 
     s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)

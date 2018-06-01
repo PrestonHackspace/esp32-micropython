@@ -12,6 +12,8 @@
     "parcel": "^1.8.1"
   },
   "scripts": {
-    "start": "parcel web/index.html"
+    "start": "parcel web/index.html",
+    "build": "parcel build web/index.html",
+    "copy": "cp -r dist/* ../web/"
   }
 }

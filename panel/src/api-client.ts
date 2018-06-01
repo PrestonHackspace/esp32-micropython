@@ -8,8 +8,8 @@ export interface ApiClient {
 }
 
 export interface DeviceStatus {
-  ap: any;
-  sta: any;
+  ap: [string, string, string, string];
+  sta?: [string, string, string, string];
 }
 
 export interface WifiNetwork {
@@ -41,8 +41,8 @@ export const newDummyApiClient = (): ApiClient => {
       await sleep(1000);
 
       return {
-        ap: 'AP stuff',
-        sta: 'STA stuff',
+        ap: ['0.0.0.0', '0.0.0.0', '0.0.0.0', '0.0.0.0'],
+        sta: ['0.0.0.0', '0.0.0.0', '0.0.0.0', '0.0.0.0'],
       };
     },
 
@@ -77,17 +77,20 @@ export const newDummyApiClient = (): ApiClient => {
 };
 
 export const newApiClient = (): ApiClient => {
-  const baseUrl = 'http://10.30.0.118';
+  // This is a slight hack to test the panel running locally...
+  const baseUrl = window.location.hostname === 'localhost' ? 'http://192.168.0.127' : '';
 
   const doRequest = async <TData extends object>(path: string, postData: any = {}) => {
     try {
-      const headers = new Headers({
-        'Content-Type': 'application/json',
-      });
-
       const postJson = JSON.stringify(postData);
 
-      const res = await window.fetch(`${baseUrl}/${path}`, { method: 'POST', headers, body: postJson });
+      // This is weird, but had issues parsing the POST body in MicroPython.
+      // So sending JSON as a header value instead...
+      const headers = new Headers({
+        'x-json': postJson,
+      });
+
+      const res = await window.fetch(`${baseUrl}/${path}`, { method: 'POST', headers });
 
       const data: TData = await res.json();
 

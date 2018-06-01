@@ -15,7 +15,6 @@ const checkDependencies = () => {
 
 const getDirtyFiles = (dir: 'web' | 'py', after?: Date) => {
   const srcDir = path.join(__dirname, '..', dir);
-
   const fileNames = fs.readdirSync(srcDir);
 
   return fileNames.map((fileName) => {
@@ -44,6 +43,12 @@ const mkdir = (port: string, path: string) => {
   return shell.exec(`ampy -p ${port} mkdir ${path}`).code;
 };
 
+const rm = (port: string, path: string) => {
+  console.log('==== Removing file:', path);
+
+  return shell.exec(`ampy -p ${port} rm ${path}`).code;
+};
+
 const uploadFile = (port: string, src: string, dest: string) => {
   console.log('==== Uploading file:', src, '->', dest);
 
@@ -59,17 +64,9 @@ const compressFile = (src: string, dest: string) => {
 const uploadPythonScripts = (port: string, lastUpload?: Date) => {
   const scripts = getDirtyFiles('py', lastUpload);
 
-  // Upload the boot script last!
-  const [boot] = scripts.filter(({ fileName }) => fileName === 'boot.py');
-
-  if (boot) {
-    const bootIndex = scripts.indexOf(boot);
-
-    scripts.splice(bootIndex, 1);
-    scripts.push(boot);
-  }
-
   for (const { fileName, filePath } of scripts) {
+    if (fileName === 'boot.py') continue;
+
     const code = uploadFile(port, filePath, fileName);
 
     if (code !== 0) {
@@ -80,7 +77,7 @@ const uploadPythonScripts = (port: string, lastUpload?: Date) => {
   }
 };
 
-const uploadWebResources = (port: string, lastUpload?: Date) => {
+const mkdirWebDirIfNotExist = (port: string) => {
   const files = ls(port);
 
   if (files.indexOf('web') === -1) {
@@ -92,6 +89,10 @@ const uploadWebResources = (port: string, lastUpload?: Date) => {
       throw new Error('mkdir failed');
     }
   }
+};
+
+const uploadWebResources = (port: string, lastUpload?: Date) => {
+  mkdirWebDirIfNotExist(port);
 
   const gzDir = path.join(__dirname, '..', 'web.gz');
 
@@ -139,9 +140,17 @@ const upload = () => {
   const lastUploadMarkerFile = path.join(__dirname, '.lastupload');
   const lastUpload = fs.existsSync(lastUploadMarkerFile) ? fs.statSync(lastUploadMarkerFile).mtime : undefined;
 
+  // Remove boot.py so that we don't slow down / crash the upload process
+  rm(port, 'boot.py');
+
   uploadWebResources(port, lastUpload);
 
   uploadPythonScripts(port, lastUpload);
+
+  // Reupload boot.py
+  const pyDir = path.join(__dirname, '..', 'py');
+
+  uploadFile(port, path.join(pyDir, 'boot.py'), 'boot.py');
 
   shell.touch(lastUploadMarkerFile);
 };
