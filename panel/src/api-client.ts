@@ -8,7 +8,7 @@ export interface ApiClient {
 }
 
 export interface DeviceStatus {
-  ap: [string, string, string, string];
+  ap?: [string, string, string, string];
   sta?: [string, string, string, string];
 }
 

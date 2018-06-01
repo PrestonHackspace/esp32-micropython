@@ -32,8 +32,8 @@ export const Status = () => ({ status: { status } }: AppState, { status: { loadS
         status === 'loading' ?
           <div className='View__loading'>Loading...</div> :
 
-          <div>
-            <div>Access Point IP: {status.ap[0]}</div>
+          <div className='Status__ips'>
+            {status.ap && <div>Access Point IP: {status.ap[0]}</div>}
 
             {status.sta && <div>Network IP: {status.sta[0]}</div>}
           </div>

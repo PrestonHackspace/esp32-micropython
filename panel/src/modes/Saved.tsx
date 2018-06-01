@@ -35,8 +35,8 @@ export const savedActions = (apiClient: ApiClient): SavedActions => ({
       return;
     }
 
-    apiClient.connectSaved(network.ssid).then(() => {
-      actions._setStatus('connected');
+    apiClient.connectSaved(network.ssid).then(({ status }) => {
+      actions._setStatus(status);
     }).catch(() => {
       actions._setStatus('failed');
     });
@@ -53,7 +53,7 @@ export const Saved: StatefulView = () => ({ saved: { networks, status } }, { sav
   return (
     <div>
 
-      <div className={`View__status View__status--${status}`}>{status}</div>
+      {status && <div className={`View__status View__status--${status}`}>{status}</div>}
 
       {
         networks === 'unloaded' ?
