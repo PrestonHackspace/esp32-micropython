@@ -1,24 +1,54 @@
 import socket
 import os
 import json
+import _thread
 
+def get_file(file):
+    src_size = -1
 
-def start_server(handler):
+    try:
+        src_path = 'web/' + file + '.gz'
+        src_size = os.stat(src_path)[6]
+
+        return [src_path, src_size, 'gzip']
+    except Exception:
+        pass
+
+    return [None, -1, None]
+
+def get_content_type(ext):
+    if ext == 'jpg':
+        return 'image/jpeg'
+    elif ext == 'png':
+        return 'image/png'
+    elif ext == 'css':
+        return 'text/css'
+    elif ext == 'js':
+        return 'text/javascript'
+    elif ext == 'txt':
+        return 'text/plain'
+    elif ext == 'mp3':
+        return 'audio/mpeg3'
+    elif ext == 'cur' or ext == 'ico':
+        return 'image/x-icon'
+    else:
+        return 'text/html; charset=UTF-8'
+
+def _start_server(handler):
     s = socket.socket()
     ai = socket.getaddrinfo("0.0.0.0", 80)
     addr = ai[0][-1]
 
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(addr)
-    s.setblocking(False)
+    s.setblocking(True)
     s.listen(5)
 
-    def accept_handler(sock):
-        try:
-            (client_s, _) = sock.accept()
-        except OSError as e:
-            # Non-blocking socket so ignore
-            return
+    # def accept_handler(sock):
+    while True:
+        sock = s
+        
+        (client_s, _) = sock.accept()
 
         try:
             client_s.settimeout(3)
@@ -122,23 +152,14 @@ def start_server(handler):
                 parts = file.split('.')
                 ext = parts[len(parts) - 1]
 
-                src_path = 'web/' + file + '.gz'
-                src_size = -1
+                [src_path, src_size, src_enc] = get_file(file)
 
-                try:
-                    src_size = os.stat(src_path)[6]
-                except Exception as e:
-                    pass
+                content_type = get_content_type(ext)
 
                 if src_size != -1:
                     header += 'HTTP/1.1 200 OK\r\n'
-                    if ext == 'jpg':
-                        header += 'Content-Type: image/jpeg\r\n'
-                    elif ext == 'css':
-                        header += 'Content-Type: text/css\r\n'
-                    else:
-                        header += 'Content-Type: text/html; charset=UTF-8\r\n'
-                    header += 'Content-Encoding: gzip\r\n'
+                    header += 'Content-Type: ' + content_type + '\r\n'
+                    header += 'Content-Encoding: ' + src_enc + '\r\n'
                     header += 'Content-Length: ' + str(src_size) + '\r\n'
                     header += '\r\n'
 
@@ -163,4 +184,7 @@ def start_server(handler):
         finally:
             client_s.close()
 
-    s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
+    # s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
+
+def start_server(handler):
+    _thread.start_new_thread(_start_server, (handler,))

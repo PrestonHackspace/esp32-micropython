@@ -14,6 +14,6 @@
   "scripts": {
     "start": "parcel web/index.html",
     "build": "rm -f dist/* && parcel build web/index.html",
-    "copy": "rm -f ../web/*.js ../web/*.css ../web/*.map && cp -r dist/*.html dist/*.js dist/*.css ../web/"
+    "copy": "rm -f ../board/web/*.js ../board/web/*.css ../board/web/*.map && cp -r dist/*.html dist/*.js dist/*.css ../board/web/"
   }
 }

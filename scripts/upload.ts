@@ -14,7 +14,7 @@ const checkDependencies = () => {
 };
 
 const getDirtyFiles = (dir: 'web' | 'py', after?: Date) => {
-  const srcDir = path.join(__dirname, '..', dir);
+  const srcDir = path.join(__dirname, '..', 'board', dir);
   const fileNames = fs.readdirSync(srcDir);
 
   return fileNames.map((fileName) => {
@@ -92,9 +92,9 @@ const mkdirWebDirIfNotExist = (port: string) => {
 };
 
 const uploadWebResources = (port: string, lastUpload?: Date) => {
-  mkdirWebDirIfNotExist(port);
+  // mkdirWebDirIfNotExist(port);
 
-  const gzDir = path.join(__dirname, '..', 'web.gz');
+  const gzDir = path.join(__dirname, '..', 'board', 'web.gz');
 
   const resources = getDirtyFiles('web', lastUpload);
 
@@ -141,16 +141,16 @@ const upload = () => {
   const lastUpload = fs.existsSync(lastUploadMarkerFile) ? fs.statSync(lastUploadMarkerFile).mtime : undefined;
 
   // Remove boot.py so that we don't slow down / crash the upload process
-  rm(port, 'boot.py');
+  // rm(port, 'boot.py');
 
   uploadWebResources(port, lastUpload);
 
-  uploadPythonScripts(port, lastUpload);
+  // uploadPythonScripts(port, lastUpload);
 
   // Reupload boot.py
-  const pyDir = path.join(__dirname, '..', 'py');
+  const pyDir = path.join(__dirname, '..', 'board', 'py');
 
-  uploadFile(port, path.join(pyDir, 'boot.py'), 'boot.py');
+  // uploadFile(port, path.join(pyDir, 'boot.py'), 'boot.py');
 
   shell.touch(lastUploadMarkerFile);
 };

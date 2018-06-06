@@ -2,10 +2,12 @@
 pip3 install esptool adafruit-ampy
 
 # Erase flash
-esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART erase_flash
+esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART -b 230400 erase_flash
 
 # Write MicroPython image
-esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART write_flash -z 0x1000 esp32-20180524-v1.9.4-86-g4200018a.bin
+esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART -b 230400 write_flash -z 0x1000 esp32-20180524-v1.9.4-86-g4200018a.bin
+
+#460800
 
 # Write driver for OLED display
 ampy -p /dev/cu.SLAB_USBtoUART put ssd1306.py
@@ -21,3 +23,16 @@ ampy -p /dev/cu.SLAB_USBtoUART put boot.py
 ampy -p /dev/cu.SLAB_USBtoUART mkdir web
 ampy -p /dev/cu.SLAB_USBtoUART put web/index.html.gz web/index.html.gz
 
+
+ampy -p /dev/cu.SLAB_USBtoUART rmdir web
+
+ampy -p /dev/cu.SLAB_USBtoUART put board/web.gz web
+ampy -p /dev/cu.SLAB_USBtoUART put board/lib lib
+
+ampy -p /dev/cu.SLAB_USBtoUART put board/boot.py boot.py
+
+
+
+
+
+ampy -p /dev/cu.SLAB_USBtoUART put board/lib/http.py lib/http.py

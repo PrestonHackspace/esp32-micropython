@@ -1,10 +1,10 @@
-import oled
+import gc
+import webrepl
+from lib import oled
+from lib import wifi
+from lib import panel
 
 oled.printLine('Starting...', 0)
-
-import wifi
-import json
-import gc
 
 gc.collect()
 
@@ -12,15 +12,11 @@ wifi.auto_connect()
 
 gc.collect()
 
-import webrepl
-
 webrepl.start(password='')
 
 gc.collect()
 
 oled.printLine('WebREPL started', 4)
-
-import panel
 
 panel.start_panel()
 

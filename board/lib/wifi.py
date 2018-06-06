@@ -44,7 +44,7 @@ def connect(ssid, password) -> str:
 
     sta_if.disconnect()
 
-    oled.printLine('Connect %s...' % ssid, 0)
+    oled.printLine('C\'ing %s...' % ssid, 0)
 
     sta_if.connect(ssid, password)
 
@@ -61,8 +61,8 @@ def connect(ssid, password) -> str:
     if connected:
         ip_address = sta_if.ifconfig()[0]
 
-        oled.printLine('Connected! %s' % ssid, 0)
-        oled.printLine('IP %s' % ip_address, 0)
+        oled.printLine('Conn! %s' % ssid, 0)
+        oled.printLine('IP %s' % ip_address, 1)
 
         return ip_address
     else:

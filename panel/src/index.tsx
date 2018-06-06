@@ -67,6 +67,11 @@ const init = () => {
             </button>,
           )
         }
+
+        <button
+          className='App__tab App__tab--unhighlight'
+          onclick={() => window.location.href = '/edu.html'}>EduBlocks
+        </button>
       </div>
 
       <div className='App__view'>
