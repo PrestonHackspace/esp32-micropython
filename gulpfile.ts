@@ -12,7 +12,7 @@ const CorePath = path.join(__dirname, 'board');
 
 const PanelPath = path.join(__dirname, 'panel', 'dist');
 
-const EduBlocksPath = path.join(__dirname, '..', '..', 'EduBlocks', 'EduBlocks.micro', 'ui', 'web');
+const EduBlocksPath = path.join(__dirname, '..', 'edublocks-micropython', 'web');
 
 const dest = path.join(__dirname, 'board-fs');
 

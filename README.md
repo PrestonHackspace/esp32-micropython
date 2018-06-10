@@ -38,9 +38,14 @@ Build the panel web app:
     yarn run build
     cd ..
 
-Build EduBlocks:
+Clone and build EduBlocks (must reside in the parent directory to this one):
 
-    TODO
+    cd ..
+    git clone git@github.com:AllAboutCode/edublocks-micropython.git
+    cd edublocks-micropython
+    yarn
+    yarn run build
+    cd ../../esp32-micropython
 
 Bundle assets and flash on to ESP32:
 
