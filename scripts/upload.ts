@@ -121,6 +121,12 @@ const uploadWebResources = (port: string, lastUpload?: Date) => {
 };
 
 const upload = () => {
+  const files = shell.find(path.join(__dirname, '..', 'board', 'web', '*'));
+
+  console.log('files', files.entries());
+
+  process.exit();
+
   const platform = os.platform();
 
   if (SupportedPlatforms.indexOf(platform) === -1) {

@@ -1,13 +1,31 @@
 {
   "devDependencies": {
+    "@types/del": "^3.0.1",
+    "@types/gulp": "^4.0.5",
+    "@types/gulp-debug": "^2.0.31",
+    "@types/gulp-gzip": "^0.0.31",
+    "@types/gulp-if": "^0.0.33",
+    "@types/gulp-uglify": "^3.0.5",
     "@types/node": "^10.1.4",
+    "@types/pump": "^1.0.1",
     "@types/shelljs": "^0.8.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-gzip": "^1.4.2",
+    "gulp-if": "^2.0.2",
+    "gulp-uglify": "^3.0.0",
+    "pump": "^3.0.0",
     "shelljs": "^0.8.2",
     "ts-node": "^6.0.5",
     "typescript": "^2.9.1"
   },
   "scripts": {
-    "copy-edublocks": "cp -r ../../EduBlocks/EduBlocks.micro/ui/dist/* board/web.gz/",
-    "upload": "ts-node scripts/upload.ts"
-  }
+    "mount-fs-osx": "hdiutil attach images/fat.img -mountpoint ./board-fs",
+    "umount-fs-osx": "hdiutil detach ./board-fs",
+    "bundle": "gulp",
+    "flash-micropython": "esptool.py --chip esp32 -b 921600 write_flash -z 0x1000 images/esp32-20180524-v1.9.4-86-g4200018a.bin",
+    "flash-fs": "esptool.py --chip esp32 -b 921600 write_flash -z 0x200000 fat.img"
+  },
+  "dependencies": {}
 }

@@ -3,6 +3,7 @@ import os
 import json
 import _thread
 
+
 def get_file(file):
     src_size = -1
 
@@ -16,6 +17,7 @@ def get_file(file):
 
     return [None, -1, None]
 
+
 def get_content_type(ext):
     if ext == 'jpg':
         return 'image/jpeg'
@@ -28,11 +30,14 @@ def get_content_type(ext):
     elif ext == 'txt':
         return 'text/plain'
     elif ext == 'mp3':
-        return 'audio/mpeg3'
+        return 'audio/mpeg'
+    elif ext == 'wav':
+        return 'audio/wav'
     elif ext == 'cur' or ext == 'ico':
         return 'image/x-icon'
     else:
         return 'text/html; charset=UTF-8'
+
 
 def _start_server(handler):
     s = socket.socket()
@@ -44,10 +49,9 @@ def _start_server(handler):
     s.setblocking(True)
     s.listen(5)
 
-    # def accept_handler(sock):
     while True:
         sock = s
-        
+
         (client_s, _) = sock.accept()
 
         try:
@@ -92,7 +96,7 @@ def _start_server(handler):
                 header += 'Content-Length: 0\r\n'
                 header += '\r\n'
 
-                client_s.write(bytes(header, 'utf-8'))
+                client_s.sendall(bytes(header, 'utf-8'))
 
             def respond_with_error(code, message):
                 header = ''
@@ -106,9 +110,9 @@ def _start_server(handler):
                 # f.write(json.dumps(lines))
                 # f.close()
 
-                client_s.send(bytes(header, 'utf-8'))
+                client_s.sendall(bytes(header, 'utf-8'))
 
-                client_s.write(bytes(message, 'utf-8'))
+                client_s.sendall(bytes(message, 'utf-8'))
 
             if request_method == 'OPTIONS':
                 return respond_with_cors()
@@ -142,9 +146,9 @@ def _start_server(handler):
                 header += 'Content-Length: ' + str(len(data)) + '\r\n'
                 header += '\r\n'
 
-                client_s.send(bytes(header, 'utf-8'))
+                client_s.sendall(bytes(header, 'utf-8'))
 
-                client_s.write(data)
+                client_s.sendall(data)
 
             if 'file' in response:
                 file = response['file']
@@ -163,7 +167,7 @@ def _start_server(handler):
                     header += 'Content-Length: ' + str(src_size) + '\r\n'
                     header += '\r\n'
 
-                    client_s.send(bytes(header, 'utf-8'))
+                    client_s.sendall(bytes(header, 'utf-8'))
 
                     if request_method == 'GET':
                         with open(src_path, 'r') as f:
@@ -171,7 +175,7 @@ def _start_server(handler):
                                 # TODO CH use buffer and readinto
                                 chunk = f.read(1024)
                                 if chunk != '':
-                                    client_s.write(chunk)
+                                    client_s.sendall(chunk)
                                 else:
                                     break
                 else:
@@ -184,7 +188,6 @@ def _start_server(handler):
         finally:
             client_s.close()
 
-    # s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
 
 def start_server(handler):
     _thread.start_new_thread(_start_server, (handler,))
