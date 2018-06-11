@@ -15,6 +15,14 @@ def get_file(file):
     except Exception:
         pass
 
+    try:
+        src_path = 'web/' + file
+        src_size = os.stat(src_path)[6]
+
+        return [src_path, src_size, None]
+    except Exception:
+        pass
+
     return [None, -1, None]
 
 
@@ -80,7 +88,12 @@ def _start_server(handler):
             if len(first_line_parts) < 3:
                 return
 
-            (request_method, path, _) = first_line_parts
+            (request_method, pathAndQuery, _) = first_line_parts
+
+            if '?' in pathAndQuery:
+                (path, _) = pathAndQuery.split('?')
+            else:
+                path = pathAndQuery
 
             header = ''
             post_json = {}
@@ -98,12 +111,14 @@ def _start_server(handler):
 
                 client_s.sendall(bytes(header, 'utf-8'))
 
-            def respond_with_error(code, message):
+            def respond_with_error(code, message, body):
                 header = ''
 
-                header += 'HTTP/1.1 ' + str(code) + ' Invalid Request\r\n'
+                data = bytes(body, 'utf-8')
+
+                header += 'HTTP/1.1 ' + str(code) + ' ' +  message + '\r\n'
                 header += 'Content-Type: text/plain\r\n'
-                header += 'Content-Length: ' + str(len(message)) + '\r\n'
+                header += 'Content-Length: ' + str(len(data)) + '\r\n'
                 header += '\r\n'
 
                 # f = open('dump.json', 'w')
@@ -112,7 +127,7 @@ def _start_server(handler):
 
                 client_s.sendall(bytes(header, 'utf-8'))
 
-                client_s.sendall(bytes(message, 'utf-8'))
+                client_s.sendall(data)
 
             if request_method == 'OPTIONS':
                 return respond_with_cors()
@@ -130,7 +145,7 @@ def _start_server(handler):
                 try:
                     post_json = json.loads(json_str)
                 except:
-                    return respond_with_error('400', 'Invalid JSON: ' + json_str)
+                    return respond_with_error('400', 'Invalid Request', 'Invalid JSON: ' + json_str)
 
             response = handler(request_method, path, post_json)
 
@@ -163,7 +178,8 @@ def _start_server(handler):
                 if src_size != -1:
                     header += 'HTTP/1.1 200 OK\r\n'
                     header += 'Content-Type: ' + content_type + '\r\n'
-                    header += 'Content-Encoding: ' + src_enc + '\r\n'
+                    if src_enc != None:
+                        header += 'Content-Encoding: ' + src_enc + '\r\n'
                     header += 'Content-Length: ' + str(src_size) + '\r\n'
                     header += '\r\n'
 
@@ -179,9 +195,9 @@ def _start_server(handler):
                                 else:
                                     break
                 else:
-                    respond_with_error(404, 'File not found')
+                    respond_with_error(404, 'File not found', 'File not found')
             else:
-                respond_with_error(404, 'Not found')
+                respond_with_error(404, 'Not found', 'Not found')
 
         except Exception as e:
             print("Exception", e)

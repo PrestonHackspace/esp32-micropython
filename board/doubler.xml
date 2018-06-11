@@ -1,0 +1,40 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="time" id="=xjsFW0tdMQ/R];B0f6D" x="208" y="128">
+    <next>
+      <block type="import_oled" id="GXUQy7s~_`Xf(E2,z^RH">
+        <next>
+          <block type="equalsblock" id="mD34_5=fT]aM`x,ZW[L9">
+            <field name="1">i</field>
+            <field name="2">1</field>
+            <next>
+              <block type="while_true" id="Y(ALw{~,9*THN^Ji;KW)">
+                <statement name="DO">
+                  <block type="oled_printLine" id="WnO*~igif[2o-3_W]1q/">
+                    <field name="text">str(i)</field>
+                    <field name="line">2</field>
+                    <next>
+                      <block type="varprint" id="_cnr}o|~2RhqdzjJ+fj~">
+                        <field name="var">'hello ' + str(i)</field>
+                        <next>
+                          <block type="sleep" id="/%(oS55D!)^8JU+B-N#,">
+                            <field name="sleepTime">1</field>
+                            <next>
+                              <block type="equalsblock" id="L.Fy:Rm#PO*@f9E}=-mi">
+                                <field name="1">i</field>
+                                <field name="2">i * 2</field>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

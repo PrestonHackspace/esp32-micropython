@@ -50,7 +50,8 @@ Clone and build EduBlocks (must reside in the parent directory to this one):
 Bundle assets and flash on to ESP32:
 
     yarn
-    yarn run mount-fs-osx
+    yarn run mount-fs-linux         # Or: yarn run mount-fs-osx
     yarn run bundle
+    yarn run umount-fs-linux        # Or: yarn run umount-fs-osx
     yarn run flash-micropython
     yarn run flash-fs
