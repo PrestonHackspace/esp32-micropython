@@ -4,7 +4,7 @@ Very rough install guide...
 
 ## Requirements
 
-    Node.js
+    Node.js (with `yarn` if building)
     Python 3
     esptool.py (`pip3 install esptool`)
 
@@ -26,8 +26,8 @@ For Linux (the default):
 
 ## Quick Install
 
-    yarn run flash-micropython
-    yarn run flash-fs
+    npm run flash-micropython
+    npm run flash-fs
 
 ## Build (for developers)
 
