@@ -5,3 +5,4 @@ dist
 *.pyc
 .DS_Store
 *.log
+networks.json

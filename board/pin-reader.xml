@@ -1,0 +1,35 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="import_machine" id="sP/=~]_(1IEIr8{C/q;p" x="65" y="71">
+    <next>
+      <block type="time" id="-a1JJ]jBQk|6~t=8%kx3">
+        <next>
+          <block type="pin_in_declare" id="G+F0Ixy(DEOxnTXt|xgB">
+            <field name="pin_name">pin</field>
+            <field name="pin_number">0</field>
+            <field name="pull_up_down">PULL_UP</field>
+            <next>
+              <block type="while_true" id="X2-9Dtg_5.Q%lyKY3kYq">
+                <statement name="DO">
+                  <block type="pin_value_get" id=";JU};jw=A2fQmlT4M?C6">
+                    <field name="var_name">var_name</field>
+                    <field name="pin_name">pin</field>
+                    <next>
+                      <block type="varprint" id="Pa^MTGN;LtK3h;(hK_2*">
+                        <field name="var">var_name</field>
+                        <next>
+                          <block type="sleep" id="auw,IeY[y?|Mw+/p{LA_">
+                            <field name="sleepTime">0.5</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

@@ -16,7 +16,7 @@ const EduBlocksPath = path.join(__dirname, '..', 'edublocks-micropython', 'web')
 
 const dest = path.join(__dirname, 'board-fs');
 
-const ExtNoGzip = ['.py', '.xml', '.mp3', '.wav']
+const ExtNoGzip = ['.py', '.xml', '.mp3', '.wav', '.json']
 
 const compressionStages = () => [
   gulpif((f) => f.extname === '.js', uglify()),
