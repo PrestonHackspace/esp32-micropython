@@ -12,6 +12,8 @@ esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART -b 921600 write_flash -z 0x100
 
 esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART -b 921600 write_flash -z 0x1000 build/firmware.bin
 
+esptool.py --chip esp32 -p /dev/cu.SLAB_USBtoUART -b 115200 read_flash 0x300000 0x100000 images/user.img
+
 # Write driver for OLED display
 ampy -p /dev/cu.SLAB_USBtoUART put ssd1306.py
 

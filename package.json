@@ -21,13 +21,14 @@
     "typescript": "^2.9.1"
   },
   "scripts": {
-    "mount-fs-osx": "hdiutil attach images/fat.img -mountpoint ./board-fs",
-    "umount-fs-osx": "hdiutil detach ./board-fs",
-    "mount-fs-linux": "mount -o loop images/fat.img ./board-fs",
-    "umount-fs-linux": "umount ./board-fs",
+    "mount-sys-osx": "hdiutil attach images/sys.img -mountpoint ./sys-fs",
+    "umount-sys-osx": "hdiutil detach ./sys-fs",
+    "mount-sys-linux": "mount -o loop images/sys.img ./sys-fs",
+    "umount-sys-linux": "umount ./sys-fs",
     "bundle": "gulp",
-    "flash-micropython": "esptool.py --chip esp32 -b 921600 write_flash -z 0x1000 images/esp32-20180524-v1.9.4-86-g4200018a.bin",
-    "flash-fs": "esptool.py --chip esp32 -b 921600 write_flash -z 0x200000 images/fat.img"
+    "flash-erase": "esptool.py --chip esp32 -b 921600 erase_flash",
+    "flash-micropython": "esptool.py --chip esp32 -b 921600 write_flash -z 0x1000 images/mp.bin",
+    "flash-sys": "esptool.py --chip esp32 -b 921600 write_flash -z 0x200000 images/sys.img"
   },
   "dependencies": {}
 }

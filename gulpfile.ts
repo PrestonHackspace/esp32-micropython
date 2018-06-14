@@ -8,13 +8,13 @@ import debug = require('gulp-debug');
 import gzip = require('gulp-gzip');
 import gulpif = require('gulp-if');
 
-const CorePath = path.join(__dirname, 'board');
+const CorePath = path.join(__dirname, 'sys');
 
 const PanelPath = path.join(__dirname, 'panel', 'dist');
 
 const EduBlocksPath = path.join(__dirname, '..', 'edublocks-micropython', 'web');
 
-const dest = path.join(__dirname, 'board-fs');
+const dest = path.join(__dirname, 'sys-fs');
 
 const ExtNoGzip = ['.py', '.xml', '.mp3', '.wav', '.json']
 
@@ -49,7 +49,9 @@ gulp.task('bundle-edublocks', () => {
   const assetsJsonPath = path.join(EduBlocksPath, '..', 'assets.json');
 
   if (!fs.existsSync(assetsJsonPath)) {
-    throw new Error('EduBlocks source not found!');
+    // throw new Error('EduBlocks source not found!');
+
+    return pump([]);
   }
 
   const assets: string[] = JSON.parse(fs.readFileSync(assetsJsonPath, 'utf-8'));

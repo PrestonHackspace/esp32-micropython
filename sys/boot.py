@@ -22,8 +22,7 @@ panel.start_panel()
 
 gc.collect()
 
-
-# counter = store.load('counter', 0)
-# printLine(str(counter), 2)
-# counter = counter + 1
-# store.save('counter', counter)
+try:
+    from user import main
+except:
+    print('Could not find main start up script')

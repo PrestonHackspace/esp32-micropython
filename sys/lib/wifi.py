@@ -134,3 +134,8 @@ def auto_connect():
             ssid = strongest_network['ssid']
 
             connect_to_saved(ssid)
+
+            return
+
+    oled.printLine('Hotspot active', 0)
+    oled.printLine('192.168.4.1', 1)
