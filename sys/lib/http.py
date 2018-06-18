@@ -8,7 +8,7 @@ def get_file(file):
     src_size = -1
 
     try:
-        src_path = 'web/' + file + '.gz'
+        src_path = '/web/' + file + '.gz'
         src_size = os.stat(src_path)[6]
 
         return [src_path, src_size, 'gzip']
@@ -16,7 +16,7 @@ def get_file(file):
         pass
 
     try:
-        src_path = 'web/' + file
+        src_path = '/web/' + file
         src_size = os.stat(src_path)[6]
 
         return [src_path, src_size, None]
