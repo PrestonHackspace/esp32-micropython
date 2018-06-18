@@ -25,6 +25,8 @@ gc.collect()
 
 sys.path.append('/user')
 
+from lib import splash
+
 try:
     import main
 except:

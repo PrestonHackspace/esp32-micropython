@@ -23,8 +23,8 @@
   "scripts": {
     "mount-sys-osx": "hdiutil attach images/sys.img -mountpoint ./sys-fs",
     "umount-sys-osx": "hdiutil detach ./sys-fs",
-    "mount-sys-linux": "mount -o loop images/sys.img ./sys-fs",
-    "umount-sys-linux": "umount ./sys-fs",
+    "mount-sys-linux": "sudo mount -o uid=$(id -u),gid=$(id -g) images/sys.img ./sys-fs",
+    "umount-sys-linux": "sudo umount ./sys-fs",
     "bundle": "gulp",
     "flash-erase": "esptool.py --chip esp32 -b 921600 erase_flash",
     "flash-micropython": "esptool.py --chip esp32 -b 921600 write_flash -z 0x1000 images/mp.bin",
