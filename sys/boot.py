@@ -1,4 +1,4 @@
-import uos
+import sys
 import gc
 import webrepl
 from lib import oled
@@ -23,7 +23,7 @@ panel.start_panel()
 
 gc.collect()
 
-uos.chdir('/user')
+sys.path.append('/user')
 
 try:
     import main
