@@ -27,7 +27,7 @@ For Linux (the default):
 ## Quick Install
 
     npm run flash-micropython
-    npm run flash-fs
+    npm run flash-sys
 
 ## Build (for developers)
 
@@ -38,7 +38,7 @@ Build the panel web app:
     yarn run build
     cd ..
 
-Clone and build EduBlocks (must reside in the parent directory to this one):
+(Optional) Clone and build EduBlocks (must reside in the parent directory to this one):
 
     cd ..
     git clone git@github.com:AllAboutCode/edublocks-micropython.git
@@ -50,8 +50,8 @@ Clone and build EduBlocks (must reside in the parent directory to this one):
 Bundle assets and flash on to ESP32:
 
     yarn
-    yarn run mount-fs-linux         # Or: yarn run mount-fs-osx
+    yarn run mount-sys-linux         # Or: yarn run mount-sys-osx
     yarn run bundle
-    yarn run umount-fs-linux        # Or: yarn run umount-fs-osx
+    yarn run umount-sys-linux        # Or: yarn run umount-sys-osx
     yarn run flash-micropython
-    yarn run flash-fs
+    yarn run flash-sys
