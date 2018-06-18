@@ -64,6 +64,8 @@ def connect(ssid, password) -> str:
         oled.printLine('Conn! %s' % ssid, 0)
         oled.printLine('IP %s' % ip_address, 1)
 
+        ap_if.active(False)
+
         return ip_address
     else:
         oled.printLine('Failed!', 0)
@@ -137,5 +139,5 @@ def auto_connect():
 
             return
 
-    oled.printLine('Hotspot active', 0)
+    oled.printLine('Hotspot: ' + ap_if.config('essid'), 0)
     oled.printLine('192.168.4.1', 1)

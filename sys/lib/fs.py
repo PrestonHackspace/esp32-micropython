@@ -8,6 +8,9 @@ def listdir(cwd = '.'):
     files = []
 
     for filename in filenames:
+        if cwd == '/':
+            cwd = ''
+
         status = os.stat(cwd + '/' + filename)
 
         files.append({

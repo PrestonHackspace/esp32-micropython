@@ -1,3 +1,4 @@
+import uos
 import gc
 import webrepl
 from lib import oled
@@ -22,7 +23,9 @@ panel.start_panel()
 
 gc.collect()
 
+uos.chdir('/user')
+
 try:
-    from user import main
+    import main
 except:
     print('Could not find main start up script')

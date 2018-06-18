@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "panel"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true,
+		"typescript.tsdk": "panel/node_modules/typescript/lib"
+	}
+}
