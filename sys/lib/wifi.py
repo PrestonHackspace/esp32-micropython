@@ -139,5 +139,5 @@ def auto_connect():
 
             return
 
-    oled.printLine('Hotspot: ' + ap_if.config('essid'), 0)
+    oled.printLine(ap_if.config('essid'), 0)
     oled.printLine('192.168.4.1', 1)
