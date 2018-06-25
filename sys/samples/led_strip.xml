@@ -1,0 +1,41 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="import_machine" id="(vkrv#eA0BR=UPK*i5+)" x="153" y="70">
+    <next>
+      <block type="import_neopixel" i d="Xyxa@!~Vv{x?B*/Y]^mk">
+        <next>
+          <block type="pin_out_declare" id="ef6LDFJ1IPox5A}cHAue">
+            <field name="pin_name">pin</field>
+            <field name="pin_number">12</field>
+            <next>
+              <block type="neopixel_declare" id="nwWPd,4G{IP@{uUv)P@n">
+                <field name="pin_name">pin</field>
+                <field name="length">8</field>
+                <next>
+                  <block type="led_colour_set" id="iBX4XR~ergl6:wHetTP.">
+                    <field name="index">0</field>
+                    <field name="colour1">#3333ff</field>
+                    <next>
+                      <block type="led_colour_set" id="_TlE.eKi5`c.,Cv:m[3E">
+                        <field name="index">1</field>
+                        <field name="colour1">#ff9900</field>
+                        <next>
+                          <block type="led_colour_set" id="C5*PE{^J);xr91d!8v#_">
+                            <field name="index">2</field>
+                            <field name="colour1">#ff0000</field>
+                            <next>
+                              <block type="neopixel_write" id="cU#d/k##M(tPYdODgUVq"></block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
