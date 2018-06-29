@@ -1,3 +1,3 @@
-import oled
+import screen
 import panel
 import wifi

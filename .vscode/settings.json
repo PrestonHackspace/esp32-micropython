@@ -1,3 +1,13 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3"
+    "python.pythonPath": "/usr/local/bin/python3",
+    "files.exclude": {
+        "/node_modules": true,
+        "/node_modules/": true
+    },
+    "search.exclude": {
+        "/node_modules": true
+    },
+    "files.watcherExclude": {
+        "/node_modules/": true
+    },
 }
